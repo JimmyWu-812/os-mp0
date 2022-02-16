@@ -23,7 +23,7 @@ fmtname(char *path)
 }
 
 void
-tree(char *path, int level)
+tree(char *path, int level, ushort *bar)
 {
   int i;
   char buf[512], *p;
@@ -32,49 +32,43 @@ tree(char *path, int level)
   struct stat st;
 
   fprintf(2, "%s", fmtname(path));
-
   if((fd = open(path, 0)) < 0){
     fprintf(2, " [error opening dir]\n");
     return;
   }
-
   if(fstat(fd, &st) < 0){
     fprintf(2, " [error opening dir]\n");
     close(fd);
     return;
   }
-
   if(st.type != T_DIR){
     fprintf(2, " [error opening dir]\n");
     close(fd);
     return;
   }
   fprintf(2, "\n");
-
   strcpy(buf, path);
   p = buf+strlen(buf);
   *p++ = '/';
   while(read(fd, &de, sizeof(de)) == sizeof(de)){
+    printf("de.name: %s\n", de.name);
     if(de.inum == 0 || !strcmp(de.name, ".") || !strcmp(de.name, ".."))
       continue;
     memmove(p, de.name, DIRSIZ);
     p[DIRSIZ] = 0;
     stat(buf, &st);
-
     if(st.type == T_DIR || st.type == T_FILE){
       for(i=0; i<level; i++){
         fprintf(2, "|   ");
       }
       fprintf(2, "|\n");
-
       for(i=0; i<level; i++){
         fprintf(2, "|   ");
       }
       fprintf(2, "+-- ");
     }
-
     if(st.type == T_DIR){
-      tree(buf, level+1);
+      tree(buf, level+1, bar);
     }
     else if(st.type == T_FILE){
       fprintf(2, "%s\n", fmtname(buf));
@@ -87,6 +81,8 @@ int
 main(int argc, char *argv[])
 {
   // add your code!
-  tree(argv[1], 0);
+
+  ushort bar[5] = {0};
+  tree(argv[1], 0, bar);
   exit(0);
 }
