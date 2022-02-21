@@ -24,11 +24,45 @@ void test0() {
 
     mkd("os2022/d2/a");
     mkd("os2022/d2/b");
-    mkfile("os2022/d2/c");
+    mkfile("os2022/d2/c.txt");
+    mkd("os2022/d2/d");
+
+    mkd("os2022/d2/d/1");
+    mkfile("os2022/d2/d/2.txt");
+    mkd("os2022/d2/d/3");
+
+    mkfile("os2022/d2/d/1/11.txt");
+    mkfile("os2022/d2/d/1/12.txt");
+    mkd("os2022/d2/d/1/13");
+
+    mkd("os2022/d2/b/x");
+    mkd("os2022/d2/b/y");
+    mkd("os2022/d2/b/z");
+
+    mkd("os2022/d2/b/y/p");
+    mkfile("os2022/d2/b/y/q.txt");
+    mkd("os2022/d2/b/y/r");
+    mkfile("os2022/d2/b/y/s.txt");
+
+    mkfile("os2022/d2/b/z/1.txt");
 
     mkd("os2022/d3/a");
-    mkfile("os2022/d3/b");
+    mkfile("os2022/d3/b.txt");
 }
+// void test0() {
+//     mkd("os2022");
+
+//     mkd("os2022/d1");
+//     mkd("os2022/d2");
+//     mkd("os2022/d3");
+
+//     mkd("os2022/d2/a");
+//     mkd("os2022/d2/b");
+//     mkfile("os2022/d2/c");
+
+//     mkd("os2022/d3/a");
+//     mkfile("os2022/d3/b");
+// }
 
 void test1() {
     mkd("a");

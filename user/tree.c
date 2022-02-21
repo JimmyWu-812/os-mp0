@@ -3,6 +3,9 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
+int numFile = 0, numDir = 0;
+char hasBar[5] = "00000";
+
 char*
 fmtname(char *path)
 {
@@ -23,7 +26,7 @@ fmtname(char *path)
 }
 
 void
-tree(char *path, int level, char *bar)
+tree(char *path, int level)
 {
   int i, r1, r2;
   char buf[512], *p;
@@ -70,7 +73,7 @@ tree(char *path, int level, char *bar)
     }
     if(!strcmp(de2.name, de1.name)){
       // printf("last item\n");
-      bar[level] = '1';
+      hasBar[level] = '1';
     }
     // printf("de.name: -%s-\n", de1.name);
     memmove(p, de1.name, DIRSIZ);
@@ -79,33 +82,35 @@ tree(char *path, int level, char *bar)
     if(st.type == T_DIR || st.type == T_FILE){
       for(i=0; i<level; i++){
         // printf("i: %d\n", i);
-        // printf("bar[i]: %c\n", bar[i]);
-        if(bar[i] == '0'){
+        // printf("hasBar[i]: %c\n", hasBar[i]);
+        if(hasBar[i] == '0'){
           fprintf(2, "|   ");
         }
-        else{
+        else if(hasBar[i] == '1'){
           fprintf(2, "    ");
         }
       }
       fprintf(2, "|\n");
       for(i=0; i<level; i++){
-        if(bar[i] == '0'){
+        if(hasBar[i] == '0'){
           fprintf(2, "|   ");
         }
-        else{
+        else if(hasBar[i] == '1'){
           fprintf(2, "    ");
         }
       }
       fprintf(2, "+-- ");
     }
     if(st.type == T_DIR){
-      tree(buf, level+1, bar);
+      numDir++;
+      tree(buf, level+1);
     }
     else if(st.type == T_FILE){
+      numFile++;
       fprintf(2, "%s\n", fmtname(buf));
     }
-    if(!strcmp(de2.name, "")){
-      bar[level] = '0';
+    if(!strcmp(de2.name, de1.name)){
+      hasBar[level] = '0';
     }
     r1 = r2;
     de1 = de2;
@@ -129,7 +134,7 @@ tree(char *path, int level, char *bar)
   //     fprintf(2, "+-- ");
   //   }
   //   if(st.type == T_DIR){
-  //     tree(buf, level+1, bar);
+  //     tree(buf, level+1, hasBar);
   //   }
   //   else if(st.type == T_FILE){
   //     fprintf(2, "%s\n", fmtname(buf));
@@ -142,8 +147,17 @@ int
 main(int argc, char *argv[])
 {
   // add your code!
+  int fd[2];
+  pipe(fd);
+  int p = fork();
+  if(p < 0){
+    tree(argv[1], 0);
+    close(fd[1]);
+  }
+  else if(p > 0){
 
-  char bar[5] = {'0'};
-  tree(argv[1], 0, bar);
+  }
+  tree(argv[1], 0);
+  printf("\n%d directories, %d files\n", numDir, numFile);
   exit(0);
 }
