@@ -2,6 +2,7 @@
 #include "kernel/fs.h"
 #include "kernel/stat.h"
 #include "user/user.h"
+#include "errno.h"
 
 int numFile = 0, numDir = 0;
 char hasBar[5] = "00000";
@@ -147,17 +148,21 @@ int
 main(int argc, char *argv[])
 {
   // add your code!
+  int numFileParent, numDirParent;
   int fd[2];
   pipe(fd);
   int p = fork();
-  if(p < 0){
+  if(p > 0){
+    read(fd[0], &numFileParent, sizeof(int));
+    read(fd[0], &numDirParent, sizeof(int));
+    fprintf(2, "\n%d directories, %d files\n", numDirParent, numFileParent);
+  }
+  else{
     tree(argv[1], 0);
-    close(fd[1]);
+    write(fd[1], &numFile, sizeof(int));
+    write(fd[1], &numDir, sizeof(int));
   }
-  else if(p > 0){
-
-  }
-  tree(argv[1], 0);
-  printf("\n%d directories, %d files\n", numDir, numFile);
+  close(fd[0]);
+  close(fd[1]);
   exit(0);
 }

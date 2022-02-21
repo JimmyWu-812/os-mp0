@@ -1,15 +1,13 @@
 == Test tree command with public testcase 0 (5%) ==
-tree command with public testcase 0: OK (5.1s)
+tree command with public testcase 0: OK (3.5s)
 == Test tree command with public testcase 1 (5%) ==
-tree command with public testcase 1: OK (0.9s)
+tree command with public testcase 1: OK (1.1s)
 == Test tree command with public testcase 2 (5%) ==
-tree command with public testcase 2: FAIL (1.2s)
-    [Error] Output on line 9: '|   |   |', should be '|   |'
+tree command with public testcase 2: OK (1.2s)
 == Test tree command with public testcase 3 (5%) ==
-tree command with public testcase 3: FAIL (1.1s)
-    [Error] Output on line 9: '|   |   |', should be '|   |'
+tree command with public testcase 3: OK (1.0s)
 == Test tree command with public testcase 4 (10%) ==
-tree command with public testcase 4: OK (0.9s)
+tree command with public testcase 4: OK (1.0s)
 == Test tree command with public testcase 5 (10%) ==
 tree command with public testcase 5: OK (1.1s)
-Score: 30/40
+Score: 40/40
