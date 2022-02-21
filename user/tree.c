@@ -72,7 +72,7 @@ tree(char *path, int level)
       r2 = read(fd, &de2, sizeof(de2));
       continue;
     }
-    if(!strcmp(de2.name, de1.name)){
+    if(!strcmp(de2.name, de1.name) || !strcmp(de2.name, "")){
       // printf("last item\n");
       hasBar[level] = '1';
     }
@@ -110,7 +110,7 @@ tree(char *path, int level)
       numFile++;
       fprintf(2, "%s\n", fmtname(buf));
     }
-    if(!strcmp(de2.name, de1.name)){
+    if(!strcmp(de2.name, de1.name) || !strcmp(de2.name, "")){
       hasBar[level] = '0';
     }
     r1 = r2;
