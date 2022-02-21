@@ -57,15 +57,19 @@ tree(char *path, int level, char *bar)
   r1 = read(fd, &de1, sizeof(de1));
   r2 = read(fd, &de2, sizeof(de2));
   while(r1 == sizeof(de1)){
-    printf("de2.name: %s\n", de2.name);
+    // printf("====================\n");
+    // printf("de1.name: %s\n", de1.name);
+    // printf("de2.name: %s\n", de2.name);
+    // printf("de1.inum: %d\n", de1.inum);
+    // printf("de2.inum: %d\n", de2.inum);
     if(de1.inum == 0 || !strcmp(de1.name, ".") || !strcmp(de1.name, "..")){
       r1 = r2;
       de1 = de2;
       r2 = read(fd, &de2, sizeof(de2));
       continue;
     }
-    if(!strcmp(de2.name, "")){
-      printf("xxx\n");
+    if(!strcmp(de2.name, de1.name)){
+      // printf("last item\n");
       bar[level] = '1';
     }
     // printf("de.name: -%s-\n", de1.name);
